@@ -1,3 +1,5 @@
+----!!!!!---- currently there is an image processing error when selecting the horizontal stripe direction ----!!!!!!-----
+
 A Python project created using ChatGPT. Here is the prompt (english translation):
 
 Properties:
