@@ -15,15 +15,17 @@ class LenticularMaker(tk.Tk):
         self.stripe_dir = tk.StringVar(value="vertikal")
         self.lpi_var = tk.StringVar(value="100")
         self.ppi_var = tk.StringVar(value="600")
-        self.width_cm = tk.StringVar()
+        self.width_cm = tk.StringVar()        # Standard: leer
         self.width_inch = tk.StringVar(value="1")  # Pflicht bei vertikal
-        self.height_cm = tk.StringVar()
-        self.height_inch = tk.StringVar()          # Pflicht bei horizontal
+        self.height_cm = tk.StringVar()       # Standard: leer
+        self.height_inch = tk.StringVar()     # Pflicht bei horizontal
+        # Konstanter Text für "optional"
+        self.optional_text = "optional"
         self.create_widgets()
         self.bind("<Configure>", self.on_resize)
 
     def validate_numeric(self, P):
-        # Erlaubt leere Eingabe; ansonsten nur Ziffern, maximal ein Punkt oder Komma.
+        # Erlaubt leere Eingabe; ansonsten nur Ziffern, höchstens ein Punkt oder Komma.
         if P == "":
             return True
         for char in P:
@@ -38,7 +40,7 @@ class LenticularMaker(tk.Tk):
         # --- 1. Bildverwaltung ---
         self.frm_images = tk.Frame(self)
         self.frm_images.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
-        # Oben: Buttons (fix angeordnet)
+        # Oben: Buttons
         self.frm_img_buttons = tk.Frame(self.frm_images)
         self.frm_img_buttons.grid(row=0, column=0, sticky="w")
         btn_add = tk.Button(self.frm_img_buttons, text="Bilder hinzufügen", command=self.add_images)
@@ -53,6 +55,8 @@ class LenticularMaker(tk.Tk):
         self.tree = ttk.Treeview(self.frm_tree, columns=("dim"), show="tree", height=5)
         self.tree.heading("#0", text="Dateiname")
         self.tree.heading("dim", text="Abmessungen")
+        # Spaltenverhältnis 75% (Dateiname) zu 25% (Abmessungen)
+        self.tree.column("#0", anchor="w")
         self.tree.column("dim", anchor="e")
         self.tree.grid(row=0, column=0, sticky="nsew")
         self.frm_tree.rowconfigure(0, weight=1)
@@ -60,62 +64,65 @@ class LenticularMaker(tk.Tk):
         scr = ttk.Scrollbar(self.frm_tree, orient="vertical", command=self.tree.yview)
         self.tree.configure(yscrollcommand=scr.set)
         scr.grid(row=0, column=1, sticky="ns")
-        
+
         # --- 2. Parameter-Einstellungen ---
         self.frm_params = tk.Frame(self)
         self.frm_params.grid(row=1, column=0, sticky="ew", padx=5, pady=5)
+        # Streifenrichtung
         tk.Label(self.frm_params, text="Streifenrichtung:").grid(row=0, column=0, sticky="w")
         tk.Radiobutton(self.frm_params, text="vertikal", variable=self.stripe_dir, value="vertikal",
                        command=self.param_changed).grid(row=0, column=1, sticky="w")
         tk.Radiobutton(self.frm_params, text="horizontal", variable=self.stripe_dir, value="horizontal",
                        command=self.param_changed).grid(row=0, column=2, sticky="w")
+        # LPI
         tk.Label(self.frm_params, text="LPI:").grid(row=1, column=0, sticky="w")
-        tk.Entry(self.frm_params, textvariable=self.lpi_var, width=7,
-                 validate="key", validatecommand=vcmd)\
+        tk.Entry(self.frm_params, textvariable=self.lpi_var, width=7, validate="key", validatecommand=vcmd)\
             .grid(row=1, column=1, columnspan=2, sticky="w")
+        # Bildbreite (cm & inch)
         self.lbl_width = tk.Label(self.frm_params, text="Bildbreite (cm/inch):")
         self.lbl_width.grid(row=2, column=0, sticky="w")
-        tk.Entry(self.frm_params, textvariable=self.width_cm, width=7,
-                 validate="key", validatecommand=vcmd)\
+        tk.Entry(self.frm_params, textvariable=self.width_cm, width=7, validate="key", validatecommand=vcmd)\
             .grid(row=2, column=1, sticky="w")
-        et_width_inch = tk.Entry(self.frm_params, textvariable=self.width_inch, width=7,
-                                 validate="key", validatecommand=vcmd)
+        et_width_inch = tk.Entry(self.frm_params, textvariable=self.width_inch, width=7, validate="key", validatecommand=vcmd)
         et_width_inch.grid(row=2, column=2, sticky="w")
         et_width_inch.bind("<KeyRelease>", self.on_width_inch)
-        self.lbl_height = tk.Label(self.frm_params, text="optional: Bildhöhe (cm/inch):")
+        # Bildhöhe (cm & inch)
+        self.lbl_height = tk.Label(self.frm_params, text=f"{self.optional_text}: Bildhöhe (cm/inch):")
         self.lbl_height.grid(row=3, column=0, sticky="w")
-        tk.Entry(self.frm_params, textvariable=self.height_cm, width=7,
-                 validate="key", validatecommand=vcmd)\
+        tk.Entry(self.frm_params, textvariable=self.height_cm, width=7, validate="key", validatecommand=vcmd)\
             .grid(row=3, column=1, sticky="w")
-        et_height_inch = tk.Entry(self.frm_params, textvariable=self.height_inch, width=7,
-                                  validate="key", validatecommand=vcmd)
+        et_height_inch = tk.Entry(self.frm_params, textvariable=self.height_inch, width=7, validate="key", validatecommand=vcmd)
         et_height_inch.grid(row=3, column=2, sticky="w")
         et_height_inch.bind("<KeyRelease>", self.on_height_inch)
+        # PPI
         tk.Label(self.frm_params, text="PPI:").grid(row=4, column=0, sticky="w")
-        tk.Entry(self.frm_params, textvariable=self.ppi_var, width=7,
-                 validate="key", validatecommand=vcmd)\
+        tk.Entry(self.frm_params, textvariable=self.ppi_var, width=7, validate="key", validatecommand=vcmd)\
             .grid(row=4, column=1, columnspan=2, sticky="w")
+        # Felder (außer inch) triggern Neuberechnung
         for var in (self.lpi_var, self.ppi_var, self.width_cm, self.height_cm):
             var.trace_add("write", lambda *args: self.param_changed())
-        
+
         # --- 3. Infobereich ---
         self.txt_info = tk.Text(self, height=9)
         self.txt_info.grid(row=2, column=0, sticky="nsew", padx=5, pady=5)
         self.txt_info.tag_config("error", foreground="red")
-        
-        # --- 4. Bild generieren ---
+
+        # --- 4. Bild generieren Button ---
         btn_generate = tk.Button(self, text="Bild generieren", command=self.generate_image)
         btn_generate.grid(row=3, column=0, sticky="ew", padx=5, pady=5)
-        
+
+        # Dynamik: Nur Bildnamenliste und Infobereich passen sich an
         self.grid_rowconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
     def on_width_inch(self, event):
+        # Bei Eingabe in "inch"-Feld für Breite: cm-Feld leeren
         self.width_cm.set("")
         self.param_changed()
 
     def on_height_inch(self, event):
+        # Bei Eingabe in "inch"-Feld für Höhe: cm-Feld leeren
         self.height_cm.set("")
         self.param_changed()
 
@@ -149,22 +156,26 @@ class LenticularMaker(tk.Tk):
 
     def param_changed(self):
         self.clear_error()
+        # Optional-Hinweis: Bei vertikal ist Bildbreite Pflicht, bei horizontal Bildhöhe Pflicht
         if self.stripe_dir.get() == "vertikal":
             self.lbl_width.config(text="Bildbreite (cm/inch):")
-            self.lbl_height.config(text="optional: Bildhöhe (cm/inch):")
+            self.lbl_height.config(text=f"{self.optional_text}: Bildhöhe (cm/inch):")
         else:
+            self.lbl_width.config(text=f"{self.optional_text}: Bildbreite (cm/inch):")
             self.lbl_height.config(text="Bildhöhe (cm/inch):")
-            self.lbl_width.config(text="optional: Bildbreite (cm/inch):")
+        # Umrechnung: Wenn cm eingegeben, dann in inch aktualisieren
         if self.width_cm.get():
             try:
-                cm = float(self.width_cm.get().replace(",", "."))
-                self.width_inch.set(str(round(cm / 2.54, 3)))
+                cm_val = float(self.width_cm.get().replace(",", "."))
+                if cm_val > 0:
+                    self.width_inch.set(str(round(cm_val / 2.54, 3)))
             except:
                 pass
         if self.height_cm.get():
             try:
-                cm = float(self.height_cm.get().replace(",", "."))
-                self.height_inch.set(str(round(cm / 2.54, 3)))
+                cm_val = float(self.height_cm.get().replace(",", "."))
+                if cm_val > 0:
+                    self.height_inch.set(str(round(cm_val / 2.54, 3)))
             except:
                 pass
         self.recalc()
@@ -184,7 +195,9 @@ class LenticularMaker(tk.Tk):
         num_images = len(self.image_list)
         dirc = self.stripe_dir.get()
         stretching = False
+
         if dirc == "vertikal":
+            # Pflicht: Bildbreite (inch) muss > 0 sein
             try:
                 width_in = float(self.width_inch.get().replace(",", "."))
                 if width_in <= 0:
@@ -207,10 +220,10 @@ class LenticularMaker(tk.Tk):
                 first = self.image_list[0]
                 Bildendhöhe = round(Bildendbreite * (first["height"] / first["width"]))
             Q = math.ceil(Bildendbreite / num_images)
-            K = Bildendhöhe
             true_width = Bildendbreite / PPI
             true_height = Bildendhöhe / PPI
-        else:
+        else:  # horizontal
+            # Pflicht: Bildhöhe (inch) muss > 0 sein
             try:
                 h_in = float(self.height_inch.get().replace(",", "."))
                 if h_in <= 0:
@@ -233,28 +246,30 @@ class LenticularMaker(tk.Tk):
                 first = self.image_list[0]
                 Bildendbreite = round(Bildendhöhe * (first["width"] / first["height"]))
             Q = math.ceil(Bildendhöhe / num_images)
-            K = Bildendbreite
             true_height = Bildendhöhe / PPI
             true_width = Bildendbreite / PPI
-        Streifenbreite = max(round(PPI / (num_images * LPI)), 1)
-        wahrerLPI = PPI / (num_images * Streifenbreite)
+
+        stripe_width = max(round(PPI / (num_images * LPI)), 1)
+        true_lpi = PPI / (num_images * stripe_width)
+
         info = (f"Anzahl der Bilder: {num_images}\n"
                 f"Bildendbreite (px): {Bildendbreite}\n"
                 f"Bildendhöhe (px): {Bildendhöhe}\n"
                 f"wahre Bildbreite (inch): {true_width:.4f}\n"
                 f"wahre Bildhöhe (inch): {true_height:.4f}\n"
                 f"Streckung: {'aktiv' if stretching else 'ausgeblendet'}\n"
-                f"Streifenbreite (px): {Streifenbreite}\n"
-                f"wahrer LPI-Wert: {wahrerLPI:.2f}\n")
+                f"Streifenbreite (px): {stripe_width}\n"
+                f"wahrer LPI-Wert: {true_lpi:.2f}\n")
         self.calc = {"dir": dirc, "Bildendbreite": Bildendbreite, "Bildendhöhe": Bildendhöhe,
-                     "Q": Q, "K": K, "Streifenbreite": Streifenbreite}
+                     "Q": Q, "stripe_width": stripe_width}
         self.txt_info.insert(tk.END, info)
 
     def on_resize(self, event):
+        # Passe nur die Breite und Höhe der Treeview (Bildnamenliste) dynamisch an.
         if self.tree:
             new_width = self.frm_tree.winfo_width()
             if new_width > 0:
-                # Abmessungen Bildnamenlisteaufteilung
+                # 75% für Dateiname, 25% für Abmessungen
                 self.tree.column("#0", width=int(new_width * 0.75))
                 self.tree.column("dim", width=int(new_width * 0.25))
             new_height = max(3, int(self.frm_tree.winfo_height() / 20))
@@ -271,16 +286,16 @@ class LenticularMaker(tk.Tk):
         BB = self.calc["Bildendbreite"]
         BH = self.calc["Bildendhöhe"]
         Q = self.calc["Q"]
-        K = self.calc["K"]
-        Streifenbreite = self.calc["Streifenbreite"]
+        stripe_width = self.calc["stripe_width"]
         num_images = len(self.image_list)
         imgs = []
         for item in self.image_list:
             try:
                 im = Image.open(item["path"])
+                # Kein Rotieren bei vertikal; horizontal – keine Rotation, da direkt geschnitten
                 if dirc == "horizontal":
-                    im = im.rotate(90, expand=True)
-                im = im.resize((Q, K))
+                    pass
+                im = im.resize((Q, BH)) if dirc == "vertikal" else im.resize((BB, Q))
                 imgs.append(im)
             except:
                 continue
@@ -295,12 +310,12 @@ class LenticularMaker(tk.Tk):
                     if x >= BB:
                         break
                     if pointers[i] < Q:
-                        sw = min(Streifenbreite, Q - pointers[i], BB - x)
-                        stripe = imgs[i].crop((pointers[i], 0, pointers[i] + sw, K))
+                        sw = min(stripe_width, Q - pointers[i], BB - x)
+                        stripe = imgs[i].crop((pointers[i], 0, pointers[i] + sw, BH))
                         final.paste(stripe, (x, 0))
                         pointers[i] += sw
                         x += sw
-        else:
+        else:  # horizontal
             final = Image.new("RGB", (BB, BH))
             pointers = [0] * num_images
             y = 0
@@ -309,12 +324,11 @@ class LenticularMaker(tk.Tk):
                     if y >= BH:
                         break
                     if pointers[i] < Q:
-                        sh = min(Streifenbreite, Q - pointers[i], BH - y)
-                        stripe = imgs[i].crop((0, pointers[i], K, pointers[i] + sh))
+                        sh = min(stripe_width, Q - pointers[i], BH - y)
+                        stripe = imgs[i].crop((0, pointers[i], BB, pointers[i] + sh))
                         final.paste(stripe, (0, y))
                         pointers[i] += sh
                         y += sh
-            final = final.rotate(-90, expand=True)
         try:
             final.save(save_path)
         except Exception as e:
@@ -323,3 +337,4 @@ class LenticularMaker(tk.Tk):
 if __name__ == "__main__":
     app = LenticularMaker()
     app.mainloop()
+    
