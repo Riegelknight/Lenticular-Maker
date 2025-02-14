@@ -49,6 +49,7 @@ Calculations (provided no error messages are present):
 2. PPI / (number of images * stripe width) = "true LPI value"
 
 For vertical stripe direction:
+
 3. (PPI * image width (inch)) rounded = image width in px
 4. image width in px / PPI = "true image width (inch)"
 5. (image width in px / number of images) rounded up = Q value
@@ -58,6 +59,7 @@ For vertical stripe direction:
 9. true image height (inch) = image height in px (rounded) / PPI
 
 For horizontal stripe direction:
+
 3. (PPI * image height (inch)) rounded = image height in px
 4. image height in px / PPI = "true image height (inch)"
 5. (image height in px / number of images) rounded up = Q value
@@ -123,13 +125,12 @@ Interner Programmablauf, strukturiert nach Ablauf:
 - Nur wenn horizontal aktiv = "Bildhöhe (inch) darf nicht leer sein"
 - Eingaben (Änderung von: Bildanzahl, Werten, Streifenrichtung) löschen zunächst die Aktelle Fehlermeldung.
 
-
-
 Berechnungen (sofern keine Fehlermeldungen vorliegen):
 1. (PPI / (Anzahl Bilder * LPI)) gerundet aber mindestens 1 = Streifenbreite
 2. PPI / (Anzahl Bilder * Streifenbreite) = "wahrerLPI-Wert"
 
 bei Vertikale Streifenrichtung:
+
 3. (PPI * Bildbreite (inch)) gerundet  = Bildendbreite px
 4. Bildendbreite px / PPI = "wahreBildbreite (inch)"
 5. (Bildendbreite px / Anzahl Bilder) aufgerundet = Q-Wert
@@ -137,15 +138,17 @@ bei Vertikale Streifenrichtung:
 7. Falls Höhe gesetzt (= Streckung aktiv): Bildendhöhe px (gerundet) = (Bildendbreite px * Bildhöhe (inch))/ Bildbreite (inch)
 8. K-Wert = Bildendhöhe px (gerundet)
 9. wahre Bildhöhe (inch) = Bildendhöhe px (gerundet) / PPI
+
 bei Horizontale Streifenrichtung:
+
 3. (PPI * Bildhöhe (inch)) gerundet = Bildendhöhe px
 4. Bildendhöhe px / PPI = "wahreBildhöhe (inch)"
-	
 5. (Bildendhöhe px / Anzahl Bilder) aufgerundet = Q-Wert
 6. Falls Bildbreite leer: Bildendbreite px (gerundet) = (Bildendhöhe px * Bildbreite px aus Liste erstes Bild) / Bildhöhe px erstes Bild
 7. Falls Breite gesetzt (= Streckung aktiv): Bildendbreite px 	(gerundet) = 	(Bildendhöhe px * Bildbreite (inch)) / Bildhöhe (inch)
 8. K-Wert = Bildendbreite px (gerundet)	
 9. wahre Bildbreite (inch) = Bildendbreite px (gerundet) / PPI
+
 Ablauf der Bildgenerierung (nach Drücken des "Bild generieren"-Buttons), strukturiert nach Ablauf:
 1. Speicherort wird gewählt
 2. Bilder werden ins Programm geladen
