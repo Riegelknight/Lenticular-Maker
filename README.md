@@ -144,6 +144,7 @@ Berechnungen (sofern keine Fehlermeldungen vorliegen):
 2. PPI / (Anzahl Bilder * Streifenbreite) = "wahrerLPI-Wert"
 
 bei "vertikal" Streifenrichtung:
+
 3. (PPI * Bildbreite (inch)) gerundet  = Bildendbreite px
 5. Bildendbreite px / PPI = "wahreBildbreite (inch)"
 6. (Bildendbreite px / Anzahl Bilder) aufgerundet = Q-Wert
@@ -152,6 +153,7 @@ bei "vertikal" Streifenrichtung:
 10. wahre Bildhöhe (inch) = Bildendhöhe px (gerundet) / PPI
 
 bei "horizontal" Streifenrichtung:
+
 3. (PPI * Bildhöhe (inch)) gerundet = Bildendhöhe px
 5. Bildendhöhe px / PPI = "wahreBildhöhe (inch)"	
 6. (Bildendhöhe px / Anzahl Bilder) aufgerundet = Y-Wert
@@ -164,10 +166,12 @@ Ablauf der Bildgenerierung (nach Drücken des "Bild generieren"-Buttons), strukt
 2. Bilder werden ins Programm geladen
 
 bei "vertikal" Streifenrichtung:
+
 3. Alle Bilder werden auf die Abmessungen Q-wert zu Bildendhöhe verzerrt.
 4. Alle Bilder werden in Streifen (wert Streifenbreite) geschnitten (abwechselnde Anordnung von links nach rechts) und zu einem Bild zusammengesetzt, solange bis Bildendbreite ist. Die Streifen sollen von jedem Bild abwechselt genommen werden, ohne Streifen in den Bildern zu überspringen.
 
 bei "horizontal" Streifenrichtung:
+
 3. Alle Bilder werden auf die Abmessungen Bildendbreite zu Y-Wert verzerrt.
 4. Alle Bilder werden in Streifen (wert Streifenbreite) geschnitten (abwechselnde Anordnung von oben nach unten) und zu einem Bild zusammengesetzt, solange bis Bildendhöhe erreicht ist. Die Streifen sollen von jedem Bild abwechselt genommen werden, ohne Streifen in den Bildern zu überspringen.
 
