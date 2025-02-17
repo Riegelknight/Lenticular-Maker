@@ -1,8 +1,8 @@
 User manual:
 - Choose the LPI value (lens per inch), of your foil you baught.
-- Choose the exact dimensions of the printed image. Make a test print and measure.
-- Choose the PPI value (pixels per inch). The image should also be saved in this PPI later when it is output in another program. The PPI value should also correspond to the DPI value (dots per inch) of the printer you are using.
-- Check the information field which values ​​are actually used, as not all combinations are physically possible.
+- Choose the exact dimensions of the printed image. Make a test-print and measure.
+- Choose the PPI value (pixels per inch). The image should also be saved in this PPI later, when it is processed in another program. The PPI value should also correspond to the DPI value (dots per inch) of the printer you are using.
+- Check the infofield which values ​​are actually used, as not all combinations are physically possible.
   
 
 A Python project created using ChatGPT. Here is the prompt (english translation):
@@ -94,7 +94,7 @@ For "horizontal" stripe direction:
 
 
 Benutzerhandbuch:
-- Wähle den LPI-Wert (Lens per Inch), den Du von Deiner gekauften Folie erhältst.
+- Wähle den LPI-Wert (Lens per Inch), den Du von deiner gekauften Folie erhältst.
 - Wähle die genauen Maße des ausgedruckten Bildes. Mache einen Probedruck und messe nach.
 - Wähle den PPI-Wert (Pixel per Inch). Das Bild sollte später auch in diesem PPI gespeichert werden, wenn es in einem anderen Programm ausgegeben wird. Der PPI-Wert sollte auch dem DPI-Wert (Dots per Inch) des von Dir verwendeten Druckers entsprechen.
 - Prüfe im Infofeld, welche Werte tatsächlich verwendet werden, da nicht alle Kombinationen physikalisch möglich sind.
