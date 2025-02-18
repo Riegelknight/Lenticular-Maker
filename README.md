@@ -1,4 +1,4 @@
-Web interface: https://websim.ai/@Riegelknight/lenticular-image-generator/
+Web interface: https:
 
 User manual:
 - Choose the LPI value (lens per inch), of your foil you baught.
