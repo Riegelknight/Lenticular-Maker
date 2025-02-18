@@ -1,3 +1,5 @@
+Web interface: https://websim.ai/@Riegelknight/lenticular-image-generator/
+
 User manual:
 - Choose the LPI value (lens per inch), of your foil you baught.
 - Choose the exact dimensions of the printed image. Make a test-print and measure.
